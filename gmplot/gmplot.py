@@ -120,16 +120,16 @@ class GoogleMapPlotter(object):
         path = zip(lats, lngs)
         self.paths.append((path, settings))
 
-    def heatmap(self, lats, lngs, threshold=10, radius=10, gradient=None, opacity=0.6, dissipating=True):
+    def heatmap(self, lats, lngs, maxIntensity=20, radius=10, gradient=None, opacity=0.85, dissipating=True):
         """
         :param lats: list of latitudes
         :param lngs: list of longitudes
-        :param threshold:
+        :param maxIntensity: The maximum intensity of the heatmap
         :param radius: The hardest param. Example (string):
         :return:
         """
         settings = {}
-        settings['threshold'] = threshold
+        settings['maxIntensity'] = maxIntensity
         settings['radius'] = radius
         settings['gradient'] = gradient
         settings['opacity'] = opacity
@@ -143,7 +143,7 @@ class GoogleMapPlotter(object):
 
     def _process_heatmap_kwargs(self, settings_dict):
         settings_string = ''
-        settings_string += "heatmap.set('threshold', %d);\n" % settings_dict['threshold']
+        settings_string += "heatmap.set('maxIntensity', %d);\n" % settings_dict['maxIntensity']
         settings_string += "heatmap.set('radius', %d);\n" % settings_dict['radius']
         settings_string += "heatmap.set('opacity', %f);\n" % settings_dict['opacity']
 
@@ -384,8 +384,8 @@ if __name__ == "__main__":
     mymap.plot(path[0], path[1], "plum", edge_width=10)
     mymap.plot(path2[0], path2[1], "red")
     mymap.polygon(path3[0], path3[1], edge_color="cyan", edge_width=5, face_color="blue", face_alpha=0.1)
-    mymap.heatmap(path4[0], path4[1], threshold=10, radius=40)
-    mymap.heatmap(path3[0], path3[1], threshold=10, radius=40, dissipating=False, gradient=[(30,30,30,0), (30,30,30,1), (50, 50, 50, 1)])
+    mymap.heatmap(path4[0], path4[1], maxIntensity=10, radius=40)
+    mymap.heatmap(path3[0], path3[1], maxIntensity=10, radius=40, dissipating=False, gradient=[(30,30,30,0), (30,30,30,1), (50, 50, 50, 1)])
     mymap.scatter(path4[0], path4[1], c='r', marker=True)
     mymap.scatter(path4[0], path4[1], s=90, marker=False, alpha=0.1)
     # Get more points with:
